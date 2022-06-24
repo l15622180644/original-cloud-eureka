@@ -1,0 +1,19 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: @project.artifactId@
+#  security:
+#    user:
+#      name: root
+#      password: root
+eureka:
+  server:
+    enable-self-preservation: false #自我保护机制（建议生产环境打开）
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false #不在eureka server注册自己
+    fetch-registry: false #不在eureka server获取服务列表
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka #服务注册地址
