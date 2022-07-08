@@ -13,11 +13,15 @@
 
     <properties>
         <original-common.version>1.0-SNAPSHOT</original-common.version>
+        <original-user.version>1.0-SNAPSHOT</original-user.version>
+        <original-email.version>1.0-SNAPSHOT</original-email.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <druid.version>1.1.10</druid.version>
         <mysql.version>8.0.29</mysql.version>
         <fastjson.version>1.2.79</fastjson.version>
         <jwt.version>3.18.2</jwt.version>
+        <javax.mail-api.version>1.6.2</javax.mail-api.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
     </properties>
 
 
@@ -28,6 +32,21 @@
                 <groupId>com.lzk</groupId>
                 <artifactId>original-common-mybatis</artifactId>
                 <version>${original-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lzk</groupId>
+                <artifactId>original-common-redis</artifactId>
+                <version>${original-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lzk</groupId>
+                <artifactId>original-user-common</artifactId>
+                <version>${original-user.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lzk</groupId>
+                <artifactId>original-email-api</artifactId>
+                <version>${original-email.version}</version>
             </dependency>
             <!--本项目jar包   结束-->
             <dependency>
@@ -54,6 +73,16 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${javax.mail-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

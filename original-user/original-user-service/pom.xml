@@ -29,8 +29,12 @@
             <artifactId>original-common-mybatis</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>com.lzk</groupId>
+            <artifactId>original-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lzk</groupId>
+            <artifactId>original-email-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

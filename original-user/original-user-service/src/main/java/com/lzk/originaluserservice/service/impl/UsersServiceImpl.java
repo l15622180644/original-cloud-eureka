@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lzk.originalemailapi.model.SendEmailParam;
+import com.lzk.originalemailapi.service.EmailService;
 import com.lzk.originaluserservice.common.base.BaseParam;
 import com.lzk.originaluserservice.common.base.BaseResult;
 import com.lzk.originaluserservice.common.exception.CustomException;
@@ -16,6 +18,8 @@ import com.lzk.originaluserservice.entity.Users;
 import com.lzk.originaluserservice.mapper.UsersMapper;
 import com.lzk.originaluserservice.service.UsersService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +41,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
+    @Resource
+    private EmailService emailService;
 
 
     @Override
@@ -147,6 +153,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
                 redisTemplate.opsForValue().set(key,JSON.toJSONString(user),expire/60,TimeUnit.MINUTES);
             }
         });
+    }
+
+    @Override
+    public BaseResult<Boolean> sendEmailToSomeone(SendEmailParam param) {
+        com.lzk.originalemailapi.base.BaseResult<Boolean> result = emailService.sendEmail(param);
+        BaseResult baseResult = new BaseResult();
+        BeanUtils.copyProperties(result,baseResult);
+        return baseResult;
     }
 
 

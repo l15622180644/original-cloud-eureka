@@ -1,16 +1,16 @@
 package com.lzk.originaluserservice.controller;
 
 
+import com.lzk.originalemailapi.model.SendEmailParam;
+import com.lzk.originalemailapi.service.EmailService;
 import com.lzk.originaluserservice.common.base.BaseParam;
 import com.lzk.originaluserservice.common.base.BaseResult;
 import com.lzk.originaluserservice.entity.Users;
 import com.lzk.originaluserservice.service.UsersService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +28,8 @@ public class UsersController {
 
     @Resource
     private UsersService usersService;
+    @Resource
+    private EmailService emailService;
 
     /**
      * 查询列表
@@ -92,6 +94,17 @@ public class UsersController {
     }
 
 
+    @PostMapping("/sendEmailToSomeone")
+    public BaseResult<Boolean> sendEmailToSomeone(@RequestBody SendEmailParam param){
+        return usersService.sendEmailToSomeone(param);
+    }
 
+    @GetMapping("/testApi")
+    public BaseResult<String> testApi(){
+        com.lzk.originalemailapi.base.BaseResult<String> result = emailService.testApi();
+        BaseResult<String> baseResult = new BaseResult<>();
+        BeanUtils.copyProperties(result,baseResult);
+        return baseResult;
+    }
 
 }

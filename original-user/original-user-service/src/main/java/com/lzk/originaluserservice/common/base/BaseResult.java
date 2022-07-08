@@ -61,6 +61,8 @@ public class BaseResult<T> implements Serializable {
         this.data = data;
     }
 
+    public BaseResult(){}
+
     public BaseResult(Integer code,String msg) {
         this.code = code;
         this.msg = msg;

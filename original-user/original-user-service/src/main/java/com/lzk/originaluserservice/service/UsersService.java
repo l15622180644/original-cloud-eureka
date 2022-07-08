@@ -1,6 +1,7 @@
 package com.lzk.originaluserservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lzk.originalemailapi.model.SendEmailParam;
 import com.lzk.originaluserservice.common.base.BaseParam;
 import com.lzk.originaluserservice.common.base.BaseResult;
 import com.lzk.originaluserservice.entity.Users;
@@ -30,5 +31,7 @@ public interface UsersService extends IService<Users> {
     BaseResult<Boolean> resetPassword();
 
     void reloadUserCache(Long userId);
+
+    BaseResult<Boolean> sendEmailToSomeone(SendEmailParam param);
 
 }

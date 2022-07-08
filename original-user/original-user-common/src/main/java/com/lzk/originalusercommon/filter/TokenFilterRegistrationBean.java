@@ -1,68 +1,57 @@
-package com.lzk.originaluserservice.filter;
+package com.lzk.originalusercommon.filter;
 
-import com.alibaba.druid.util.PatternMatcher;
-import com.alibaba.druid.util.ServletPathMatcher;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.lzk.originalusercommon.model.LoginUser;
+import com.lzk.originalusercommon.util.ServletPathMatcher;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author
  * @module
  * @date 2021/6/5 16:43
  */
-//@Component
 public class TokenFilterRegistrationBean extends FilterRegistrationBean<Filter> {
-    Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    private static final ThreadLocal<LoginUser> THREAD_LOCAL = new ThreadLocal<>();
 
-    @Resource
     private RedisTemplate<String,Object> redisTemplate;
 
     private final String EXCLUSIONS_NAME = "exclusions";
 
+    public TokenFilterRegistrationBean(RedisTemplate<String,Object> redisTemplate,Integer order,List<String> exclusions,String... urlPatterns){
+        this.redisTemplate = redisTemplate;
+        init(order,exclusions,urlPatterns);
+    }
 
-
-    @PostConstruct
-    public void init() {
+    public void init(Integer order,List<String> exclusions,String... urlPatterns) {
         setFilter(new TokenFilter());
-        addInitParameter(EXCLUSIONS_NAME, JSON.toJSONString(Stream.of(
-                "/userService/login"
-        ).collect(Collectors.toList())));
-        addUrlPatterns("/*");
-        setOrder(10);
+        addInitParameter(EXCLUSIONS_NAME, JSON.toJSONString(exclusions));
+        addUrlPatterns(urlPatterns);
+        setOrder(order);
     }
 
     class TokenFilter implements Filter {
 
-        private PatternMatcher pathMatcher = new ServletPathMatcher();
         private List<String> exclusionsParam;
 
         @Override
         public void init(FilterConfig filterConfig) throws ServletException {
             String parameter = filterConfig.getInitParameter(EXCLUSIONS_NAME);
-            log.info("exclusions:{}", parameter);
+            LOG.info("exclusions:{}", parameter);
             if (StringUtils.isNotBlank(parameter)) exclusionsParam = JSON.parseArray(parameter,String.class);
         }
 
@@ -71,7 +60,7 @@ public class TokenFilterRegistrationBean extends FilterRegistrationBean<Filter> 
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             String uri = request.getRequestURI();
-            log.info("请求URI:{}", "  " + uri);
+            LOG.info("请求URI:{}", "  " + uri);
             if (isExclusions(uri)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
@@ -87,7 +76,7 @@ public class TokenFilterRegistrationBean extends FilterRegistrationBean<Filter> 
             ListIterator<String> iterator = exclusionsParam.listIterator();
             while (iterator.hasNext()) {
                 String s = iterator.next();
-                if (pathMatcher.matches(s, uri)) {
+                if (ServletPathMatcher.getInstance().matches(s, uri)) {
                     return true;
                 }
             }
@@ -96,6 +85,8 @@ public class TokenFilterRegistrationBean extends FilterRegistrationBean<Filter> 
 
         private boolean checkToken(String token) {
             if (!redisTemplate.hasKey(token)) return false;
+            String s = (String) redisTemplate.opsForValue().get(token);
+            THREAD_LOCAL.set(JSONObject.parseObject(s,LoginUser.class));
             redisTemplate.expire(token, 2, TimeUnit.HOURS);
             return true;
         }

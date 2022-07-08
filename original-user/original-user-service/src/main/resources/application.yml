@@ -27,3 +27,9 @@ eureka:
       defaultZone: http://localhost:9000/eureka
     register-with-eureka: true
     fetch-registry: true
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: @project.artifactId@
+feign:
+  circuitbreaker:
+    enabled: false #开启熔断策略

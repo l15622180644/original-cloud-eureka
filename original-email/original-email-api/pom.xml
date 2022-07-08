@@ -5,34 +5,34 @@
 
     <parent>
         <groupId>com.lzk</groupId>
-        <artifactId>original-common</artifactId>
+        <artifactId>original-email</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.lzk</groupId>
-    <artifactId>original-common-mybatis</artifactId>
+    <artifactId>original-email-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
 
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>2.2.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
+            <artifactId>fastjson</artifactId>
         </dependency>
     </dependencies>
 

@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+//@ControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
 

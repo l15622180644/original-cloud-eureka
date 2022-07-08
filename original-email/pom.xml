@@ -4,22 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.lzk</groupId>
         <artifactId>original-cloud-eureka</artifactId>
+        <groupId>com.lzk</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.lzk</groupId>
-    <artifactId>original-common</artifactId>
+    <artifactId>original-email</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>original-common-mybatis</module>
-        <module>original-common-redis</module>
+        <module>original-email-service</module>
+        <module>original-email-api</module>
     </modules>
-
 
 
 </project>

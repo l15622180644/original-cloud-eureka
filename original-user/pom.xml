@@ -19,6 +19,7 @@
     <modules>
         <module>original-user-service</module>
         <module>original-user-service-api</module>
+        <module>original-user-common</module>
     </modules>
 
 
