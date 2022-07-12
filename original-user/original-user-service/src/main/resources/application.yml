@@ -33,3 +33,9 @@ eureka:
 feign:
   circuitbreaker:
     enabled: false #开启熔断策略
+  client:
+    config:
+      default:
+        connectTimeout: 5000 #连接超时时间（毫秒）
+        readTimeout: 6000 #请求处理超时时间（毫秒）
+

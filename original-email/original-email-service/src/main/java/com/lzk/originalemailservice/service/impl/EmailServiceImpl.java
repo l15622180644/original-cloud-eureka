@@ -39,7 +39,11 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public BaseResult<String> testApi() {
-        int a = 1/0;
+        try {
+            Thread.sleep(5500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         BaseResult<String> baseResult = new BaseResult<>(200,"请求成功", "哦豁");
         return baseResult;
     }
