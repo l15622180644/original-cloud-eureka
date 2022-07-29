@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public BaseResult<String> testApi() {
         try {
-            Thread.sleep(5500);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

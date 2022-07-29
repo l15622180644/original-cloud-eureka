@@ -27,15 +27,37 @@ eureka:
       defaultZone: http://localhost:9000/eureka
     register-with-eureka: true
     fetch-registry: true
-#  instance:
-#    prefer-ip-address: true
-#    instance-id: @project.artifactId@
+  instance:
+    prefer-ip-address: true #使用ip进行注册
+    instance-id: @project.artifactId@ #向注册中心注册的服务唯一id
+    lease-renewal-interval-in-seconds: 5 #发送心跳间隔
+    lease-expiration-duration-in-seconds: 60 #表示 Eureka Server 在接收到上一个心跳之后等待下一个心跳的秒数
 feign:
   circuitbreaker:
-    enabled: false #开启熔断策略
+    enabled: true #开启熔断降级策略
+  httpclient:
+    enabled: true
   client:
     config:
       default:
         connectTimeout: 5000 #连接超时时间（毫秒）
         readTimeout: 6000 #请求处理超时时间（毫秒）
 
+#feign整合hystrix
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+#开启Feign客户端的日志
+logging:
+  level:
+    com.lzk.originalemailapi.service.EmailService: debug
+
+ribbon:
+  http:
+    client:
+      enabled: true
